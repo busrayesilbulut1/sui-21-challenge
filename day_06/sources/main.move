@@ -1,35 +1,31 @@
 module day_06::main {
-    use std::string::{Self, String};
-    use std::signer;
     use std::vector;
+    use sui::object::UID;
 
-    struct TxContext has store {}
-
-    struct UID has store {
-        id: u64,
-    }
-
+    // Habit struct
     public struct Habit has key, store {
         id: UID,
-        name: String,
+        name: vector<u8>,
         completed: bool,
     }
 
-    public fun new_habit(name: String, ctx: &mut TxContext): Habit {
+    // Yeni Habit yarat
+    public fun new_habit(name: vector<u8>, id: UID): Habit {
         Habit {
-            id: UID { id: 0 },
+            id,
             name,
             completed: false,
         }
     }
 
-    public fun make_habit(bytes: vector<u8>, ctx: &mut TxContext): Habit {
-        let name_string = string::utf8(bytes);
-        new_habit(name_string, ctx)
+    // Helper: bytes -> Habit
+    public fun make_habit(bytes: vector<u8>, id: UID): Habit {
+        new_habit(bytes, id)
     }
 
-    public fun example(ctx: &mut TxContext): Habit {
+    // Örnek kullaným
+    public fun example(id: UID): Habit {
         let habit_bytes = b"Workout";
-        make_habit(habit_bytes, ctx)
+        make_habit(habit_bytes, id)
     }
 }
