@@ -1,8 +1,18 @@
-/*
-/// Module: day_08
-module day_08::day_08;
-*/
+module day_08::bounty_board {
 
-// For Move coding conventions, see
-// https://docs.sui.io/concepts/sui-move-concepts/conventions
+    use std::string::String;
 
+   public struct Task has store {
+        title: String,
+        reward: u64,
+        done:bool
+    }
+
+    public fun new_task(title: String, reward: u64): Task {
+        Task {
+            title,
+            reward,
+            done:false
+        }
+    }
+}
